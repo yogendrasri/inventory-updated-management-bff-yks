@@ -295,7 +295,7 @@ spec:
 
                 . ./env-config
 
-                if [[ -z "${ARTIFACTORY_ENCRYPT}" ]]; then
+                if [[ -z "${ARTIFACTORY_ENCRPT}" ]]; then
                     echo "Encrption key not available for Jenkins pipeline, please add it to the artifactory-access"
                     exit 1
                 fi
@@ -316,7 +316,7 @@ spec:
                 helm package --version ${IMAGE_VERSION} ${CHART_ROOT}/${IMAGE_NAME}
 
                 # Get the index and re index it with current Helm Chart
-                curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_ENCRYPT} -O "${URL}/${REGISTRY_NAMESPACE}/index.yaml"
+                curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_ENCRPT} -O "${URL}/${REGISTRY_NAMESPACE}/index.yaml"
 
                 if [[ $(cat index.yaml | jq '.errors[0].status') != "404" ]]; then
                     # Merge the chart index with the current index.yaml held in Artifactory
@@ -330,10 +330,10 @@ spec:
                 fi;
 
                 # Persist the Helm Chart in Artifactory for us by ArgoCD
-                curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_ENCRYPT} -i -vvv -T ${IMAGE_NAME}-${IMAGE_VERSION}.tgz "${URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}-${IMAGE_VERSION}.tgz"
+                curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_ENCRPT} -i -vvv -T ${IMAGE_NAME}-${IMAGE_VERSION}.tgz "${URL}/${REGISTRY_NAMESPACE}/${IMAGE_NAME}-${IMAGE_VERSION}.tgz"
 
                 # Persist the Helm Chart in Artifactory for us by ArgoCD
-                curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_ENCRYPT} -i -vvv -T index.yaml "${URL}/${REGISTRY_NAMESPACE}/index.yaml"
+                curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_ENCRPT} -i -vvv -T index.yaml "${URL}/${REGISTRY_NAMESPACE}/index.yaml"
 
             '''
             }
