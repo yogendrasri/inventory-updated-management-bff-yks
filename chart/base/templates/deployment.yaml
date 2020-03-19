@@ -45,6 +45,8 @@ spec:
               value: ""
             - name: PROTOCOLS
               value: ""
+            - name: SERVICE_URL
+              value: {{ .Values.serviceUrl | quote }}
             - name: LOG_LEVEL
               value: {{ .Values.logLevel | quote }}
           resources:
